@@ -79,6 +79,25 @@ describe("[Route::Todo]", () => {
         );
       });
   });
+  it("GET /todos/non-existing-id -> 404", () => {
+    return request(app)
+      .get("/todos/9999999999999999999")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(404)
+      // .then((response) => {
+      //   expect(response.body).toEqual(
+      //     expect.objectContaining({
+      //       success: true,
+      //       data: expect.objectContaining({
+      //         id: expect.any(Number),
+      //         name: expect.any(String),
+      //         completed: expect.any(Boolean),
+      //       }),
+      //     })
+      //   );
+      // });
+  });
 
   it("PATCH /todos/id -> updates todo object by ID", () => {
     return request(app)
