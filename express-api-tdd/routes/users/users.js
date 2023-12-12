@@ -1,4 +1,5 @@
 var express = require("express");
+var env = require('../../env');
 const {
   transformResponse,
   queryFailure,
@@ -13,7 +14,7 @@ const jwtSign = function (next, user) {
   let token;
   try {
     //Creating jwt token
-    token = jwt.sign({ id: user.id }, "secretkeyappearshere", {
+    token = jwt.sign({ id: user.id }, env.jwtKey, {
       expiresIn: "10000000000h",
     });
   } catch (err) {

@@ -2,9 +2,9 @@ const request = require("supertest");
 const app = require("../../app");
 const db = require("../../db");
 const UserModel = require("./user.model");
+const env = require("../../env");
 
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAyMzg5MzA0LCJleHAiOjM2MDAxNzAyMzg5MzA0fQ.kAO-9keaTy7dJAjcj1zKU1AmXDH6SUVmbhZh_Rz8p4w";
+let token = env.token
 describe("[Route::User]", () => {
   // let UserModel;
   beforeAll(() => {
