@@ -22,14 +22,19 @@ describe("Navigation", () => {
   it('should render home page', ()=>{
     expect(screen.getByTestId("home-page--wrapper")).toBeInTheDocument();
   })
-  it("should navigate to post after click ", () => {
+  it("should navigate to post after click then to home on click again", () => {
 
     const linkElement = screen.getByTestId("app-header--navbar-link-post");
+    expect(linkElement).toBeInTheDocument();
+    expect(linkElement).toHaveTextContent("post-1")
     fireEvent.click(linkElement);
     expect(screen.getByTestId("post-page--wrapper")).toBeInTheDocument();
 
     const linkHomeElement = screen.getByTestId("app-header--navbar-link-home");
+    expect(linkHomeElement).toBeInTheDocument()
+    expect(linkHomeElement).toHaveTextContent('home');
     fireEvent.click(linkHomeElement);
+
     expect(screen.getByTestId("home-page--wrapper")).toBeInTheDocument();
   });
 });
