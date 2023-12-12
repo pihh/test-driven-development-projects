@@ -59,6 +59,30 @@ describe("[Route::Todo]", () => {
         );
       });
   });
+  
+  it("POST /todos -> without name", () => {
+    return request(app)
+      .post("/todos")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .send({
+        completed: false,
+      })
+      .expect(402)
+      // .then((response) => {
+      //   expect(response.body).toEqual(
+      //     expect.objectContaining({
+      //       success: true,
+      //       data: expect.objectContaining({
+      //         id: expect.any(Number),
+      //         name: expect.any(String),
+      //         completed: expect.any(Boolean),
+      //       }),
+      //     })
+      //   );
+      // });
+  });
+
 
   it("GET /todos/id -> todo object by ID", () => {
     return request(app)

@@ -1,6 +1,6 @@
 var express = require('express');
 var db = require('../../db');
-const { transformResponse } = require('../../utils/response');
+const { transformResponse, notFound, missingRequiredArgs } = require('../../utils/response');
 const createHttpError = require('http-errors');
 
 var router = express.Router();
@@ -13,14 +13,15 @@ router.get('/', async function(req, res, next) {
 router.get('/:id', async function(req, res, next) {
   const id = req.params.id
   const data = await db.sequelize.models.Todo.findByPk(id);
-  if(!data){
-    return next(createHttpError(404,'Not found'))
-  }
+  if(notFound(next,data))return
   res.json(transformResponse(data))
 });
 
 router.post('/', async function(req, res, next) {
   const name = req.body.name;
+
+  if(missingRequiredArgs(next,req,[{name:"name",type:"string"}]))return;
+
   const completed = false;
 
   const data = await db.sequelize.models.Todo.create({name,completed})
