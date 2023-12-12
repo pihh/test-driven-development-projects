@@ -6,7 +6,7 @@ const env = require("../../env");
 
 let token = env.token
 describe("[Route::User]", () => {
-  // let UserModel;
+  
   beforeAll(() => {
     return db.sequelize.sync().then(async () => {
       await UserModel.create({
@@ -17,27 +17,27 @@ describe("[Route::User]", () => {
     });
   });
 
-  it("GET /api/users -> array without private fields", () => {
+  it("GET /api/users -> Array without private fields [email and password]", () => {
     return request(app)
       .get("/api/users")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200)
       .then((response) => {
-
+        expect(response.body).toEqual(
+            expect.objectContaining({
+              success: true,
+              data: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(Number),
+                  name: expect.any(String),
+                }),
+              ]),
+            })
+          );
         expect(response.body.data[0]).not.toHaveProperty('password');
         expect(response.body.data[0]).not.toHaveProperty('email');
-        expect(response.body).toEqual(
-          expect.objectContaining({
-            success: true,
-            data: expect.arrayContaining([
-              expect.objectContaining({
-                id: expect.any(Number),
-                name: expect.any(String),
-              }),
-            ]),
-          })
-        );
+        
       })
       .catch((err) => {
         throw new Error(err);
