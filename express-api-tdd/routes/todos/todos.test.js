@@ -71,7 +71,7 @@ describe("[Route::Todo]", () => {
       .expect(402)
       // .then((response) => {
       //   expect(response.body).toEqual(
-      //     expect.objectContaining({
+      //     expect.objectContaining({ 
       //       success: true,
       //       data: expect.objectContaining({
       //         id: expect.any(Number),
