@@ -1,20 +1,31 @@
 const request = require("supertest");
 const app = require("../../app");
 const db = require("../../db");
+const TodoModel = require("./todo.model");
 
 describe("[Route::Todo]", () => {
-  let TodoModel;
+  let token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAyMzg5MzA0LCJleHAiOjM2MDAxNzAyMzg5MzA0fQ.kAO-9keaTy7dJAjcj1zKU1AmXDH6SUVmbhZh_Rz8p4w";
+  // let TodoModel;
   beforeAll(() => {
     return db.sequelize.sync().then(async () => {
-      TodoModel = db.sequelize.models.Todo;
       await TodoModel.create({ name: "first_task", completed: false });
       await TodoModel.create({ name: "second_task", completed: false });
+      try{
+        token = await UserModel.create({
+          name: "filipe",
+          email: "filipemotasa@hotmail.com",
+          password: "123456",
+        }).data.token;
+      }catch(ex){
+
+      }
     });
   });
 
-  it("GET /todos -> array", () => {
+  it("GET /api/todos -> array", () => {
     return request(app)
-      .get("/todos")
+      .get("/api/todos")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200)
@@ -37,10 +48,11 @@ describe("[Route::Todo]", () => {
       });
   });
 
-  it("POST /todos -> creates todo object", () => {
+  it("POST /api/todos -> creates todo object", () => {
     return request(app)
-      .post("/todos")
+      .post("/api/todos")
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer "+token)
       .expect("Content-Type", /json/)
       .send({
         name: "do dishes",
@@ -60,10 +72,11 @@ describe("[Route::Todo]", () => {
       });
   });
 
-  it("POST /todos -> without name", () => {
+  it("POST /api/todos -> without name", () => {
     return request(app)
-      .post("/todos")
+      .post("/api/todos")
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer "+token)
       .expect("Content-Type", /json/)
       .send({
         completed: false,
@@ -83,10 +96,11 @@ describe("[Route::Todo]", () => {
     // });
   });
 
-  it("GET /todos/id -> todo object by ID", () => {
+  it("GET /api/todos/id -> todo object by ID", () => {
     return request(app)
-      .get("/todos/1")
+      .get("/api/todos/1")
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer "+token)
       .expect("Content-Type", /json/)
       .expect(200)
       .then((response) => {
@@ -102,9 +116,9 @@ describe("[Route::Todo]", () => {
         );
       });
   });
-  it("GET /todos/non-existing-id -> 404", () => {
+  it("GET /api/todos/non-existing-id -> 404", () => {
     return request(app)
-      .get("/todos/9999999999999999999")
+      .get("/api/todos/9999999999999999999")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(404);
@@ -122,10 +136,11 @@ describe("[Route::Todo]", () => {
     // });
   });
 
-  it("PATCH /todos/id -> updates todo object by ID", () => {
+  it("PATCH /api/todos/id -> updates todo object by ID", () => {
     return request(app)
-      .patch("/todos/2")
+      .patch("/api/todos/2")
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer "+token)
       .expect("Content-Type", /json/)
       .send({
         name: "patched request",
@@ -139,13 +154,13 @@ describe("[Route::Todo]", () => {
           })
         );
         return request(app)
-          .get("/todos/2")
+          .get("/api/todos/2")
           .then((response) => {
             expect(response.body).toEqual(
               expect.objectContaining({
                 success: true,
                 data: expect.objectContaining({
-                  name: "patched request"
+                  name: "patched request",
                 }),
               })
             );
@@ -153,10 +168,11 @@ describe("[Route::Todo]", () => {
       });
   });
 
-  it("PATCH /todos/id -> updates todo object by ID", () => {
+  it("PATCH /api/todos/id -> updates todo object by ID", () => {
     return request(app)
-      .patch("/todos/2")
+      .patch("/api/todos/2")
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer "+token)
       .expect("Content-Type", /json/)
       .send({
         completed: true,
@@ -170,7 +186,7 @@ describe("[Route::Todo]", () => {
           })
         );
         return request(app)
-          .get("/todos/2")
+          .get("/api/todos/2")
           .then((response) => {
             expect(response.body).toEqual(
               expect.objectContaining({
@@ -183,24 +199,27 @@ describe("[Route::Todo]", () => {
           });
       });
   });
-  it("PATCH /todos/id -> updates todo object by ID", () => {
+  it("PATCH /api/todos/id -> updates todo object by ID", () => {
     return request(app)
-      .patch("/todos/2")
+      .patch("/api/todos/2")
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer "+token)
       .expect("Content-Type", /json/)
       .send({
         id: 10,
       })
-      .expect(200)
+      .expect(404)
       .then((response) => {
         expect(response.body).toEqual(
           expect.objectContaining({
-            success: true,
-            data: expect.arrayContaining([expect.any(Number)]),
+            success: false,
+            data: expect.objectContaining({
+              message: expect.any(String),
+            }),
           })
         );
         return request(app)
-          .get("/todos/2")
+          .get("/api/todos/2")
           .then((response) => {
             expect(response.body).toEqual(
               expect.objectContaining({
@@ -213,10 +232,11 @@ describe("[Route::Todo]", () => {
           });
       });
   });
-  it("DELETE /todos/id -> deletes todo object by ID", () => {
+  it("DELETE /api/todos/id -> deletes todo object by ID", () => {
     return request(app)
-      .delete("/todos/1")
+      .delete("/api/todos/1")
       .set("Accept", "application/json")
+      .set("Authorization", "Bearer "+token)
       .expect("Content-Type", /json/)
       .expect(200)
       .then((response) => {

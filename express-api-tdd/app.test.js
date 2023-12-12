@@ -6,10 +6,10 @@ describe("[app.js]", () => {
   beforeAll(() => {
     return db.sequelize.sync();
   });
-  it("should run", () => {
+  it("should run", (done) => {
     
-    return request(app)
-      .get("/api")
+    request(app)
+      .get("/app")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200)
@@ -21,12 +21,13 @@ describe("[app.js]", () => {
             data: expect.any(Object),
           })
         );
+        done();
       });
   });
 
-  it("Not found -> should return a response with 404 status and response message type", () => {
-    return request(app)
-      .get("/api/non-existent-route")
+  it("Not found -> should return a response with 404 status and response message type", (done) => {
+    request(app)
+      .get("/app/non-existent-route")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(404)
@@ -38,6 +39,7 @@ describe("[app.js]", () => {
             data: expect.any(Object),
           })
         );
+        done()
       });
   });
 });

@@ -24,6 +24,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.tutorials = require("./routes/todos/todo.model")(sequelize, Sequelize);
+// db.tutorials = require("./routes/todos/todo.model")(sequelize, Sequelize);
 
 module.exports = db;

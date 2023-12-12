@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/api', function(req, res, next) {
+router.get('/app', function(req, res, next) {
   res.json(transformResponse({message:"Application running"}))
 });
 

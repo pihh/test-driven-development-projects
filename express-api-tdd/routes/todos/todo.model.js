@@ -1,19 +1,20 @@
-const sequelize = require("../../db");
+const db = require("../../db");
 const { Op, Model, DataTypes } = require("sequelize");
 
 
+class Todo extends Model{}
 
+Todo.init({
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: DataTypes.STRING,
+  completed: DataTypes.BOOLEAN,
+},{
+  sequelize:db.sequelize,
+  modelName:"todo"
+})
 
-module.exports = (sequelize, Sequelize) => {
-  const Todo = sequelize.define("Todo", {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: DataTypes.STRING,
-    completed: DataTypes.BOOLEAN,
-  });
-
-  return Todo;
-};
+module.exports = Todo

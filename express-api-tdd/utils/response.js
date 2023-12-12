@@ -28,25 +28,34 @@ function missingRequiredArgs(next, req, config = []) {
   }
   return false;
 }
-function queryFailure(next,err){
-    return next(
-        createHttpError(402, {
-          message: err
-        })
-      );
+function queryFailure(next, err) {
+  return next(
+    createHttpError(402, {
+      message: err,
+    })
+  );
 }
 
-async function queryDb(next,callback){
-    try{
-        return await callback();
-    }catch(err){
-        return queryFailure(err)
-    }
+async function queryDb(next, callback) {
+  try {
+    return await callback();
+  } catch (err) {
+    return queryFailure(err);
+  }
+}
+
+function unauthenticated(next) {
+  return next(
+    createHttpError(401, {
+      message: "Unauthorized",
+    })
+  );
 }
 module.exports = {
   transformResponse,
   notFound,
   missingRequiredArgs,
   queryFailure,
-  queryDb
+  queryDb,
+  unauthenticated,
 };
