@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-var env = require('../../env');
+var env = require('../env');
 const { unauthenticated } = require('../utils/response');
 
 module.exports = (req, res, next) => {

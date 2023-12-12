@@ -17,13 +17,16 @@ describe("[Route::User]", () => {
     });
   });
 
-  it("GET /api/users -> array", () => {
+  it("GET /api/users -> array without private fields", () => {
     return request(app)
       .get("/api/users")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200)
       .then((response) => {
+
+        expect(response.body.data[0]).not.toHaveProperty('password');
+        expect(response.body.data[0]).not.toHaveProperty('email');
         expect(response.body).toEqual(
           expect.objectContaining({
             success: true,
