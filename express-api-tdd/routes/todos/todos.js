@@ -39,10 +39,12 @@ router.post("/", async function (req, res, next) {
 
 router.patch("/:id", async function (req, res, next) {
   const id = req.params.id;
-  const name = req.body.name; 
+  delete req.body.id;
+  // const name = req.body.name; 
+  // const completed = "completed" in req.body ? req.body.completed : undefined;
 
   const data = await db.sequelize.models.Todo.update(
-    { name },
+    req.body,
     { where: { id: id } }
   );
   res.json(transformResponse(data));

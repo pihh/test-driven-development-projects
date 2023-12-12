@@ -59,7 +59,7 @@ describe("[Route::Todo]", () => {
         );
       });
   });
-  
+
   it("POST /todos -> without name", () => {
     return request(app)
       .post("/todos")
@@ -68,21 +68,20 @@ describe("[Route::Todo]", () => {
       .send({
         completed: false,
       })
-      .expect(402)
-      // .then((response) => {
-      //   expect(response.body).toEqual(
-      //     expect.objectContaining({ 
-      //       success: true,
-      //       data: expect.objectContaining({
-      //         id: expect.any(Number),
-      //         name: expect.any(String),
-      //         completed: expect.any(Boolean),
-      //       }),
-      //     })
-      //   );
-      // });
+      .expect(402);
+    // .then((response) => {
+    //   expect(response.body).toEqual(
+    //     expect.objectContaining({
+    //       success: true,
+    //       data: expect.objectContaining({
+    //         id: expect.any(Number),
+    //         name: expect.any(String),
+    //         completed: expect.any(Boolean),
+    //       }),
+    //     })
+    //   );
+    // });
   });
-
 
   it("GET /todos/id -> todo object by ID", () => {
     return request(app)
@@ -108,19 +107,19 @@ describe("[Route::Todo]", () => {
       .get("/todos/9999999999999999999")
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
-      .expect(404)
-      // .then((response) => {
-      //   expect(response.body).toEqual(
-      //     expect.objectContaining({
-      //       success: true,
-      //       data: expect.objectContaining({
-      //         id: expect.any(Number),
-      //         name: expect.any(String),
-      //         completed: expect.any(Boolean),
-      //       }),
-      //     })
-      //   );
-      // });
+      .expect(404);
+    // .then((response) => {
+    //   expect(response.body).toEqual(
+    //     expect.objectContaining({
+    //       success: true,
+    //       data: expect.objectContaining({
+    //         id: expect.any(Number),
+    //         name: expect.any(String),
+    //         completed: expect.any(Boolean),
+    //       }),
+    //     })
+    //   );
+    // });
   });
 
   it("PATCH /todos/id -> updates todo object by ID", () => {
@@ -139,6 +138,79 @@ describe("[Route::Todo]", () => {
             data: expect.arrayContaining([expect.any(Number)]),
           })
         );
+        return request(app)
+          .get("/todos/2")
+          .then((response) => {
+            expect(response.body).toEqual(
+              expect.objectContaining({
+                success: true,
+                data: expect.objectContaining({
+                  name: "patched request"
+                }),
+              })
+            );
+          });
+      });
+  });
+
+  it("PATCH /todos/id -> updates todo object by ID", () => {
+    return request(app)
+      .patch("/todos/2")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .send({
+        completed: true,
+      })
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            success: true,
+            data: expect.arrayContaining([expect.any(Number)]),
+          })
+        );
+        return request(app)
+          .get("/todos/2")
+          .then((response) => {
+            expect(response.body).toEqual(
+              expect.objectContaining({
+                success: true,
+                data: expect.objectContaining({
+                  completed: true,
+                }),
+              })
+            );
+          });
+      });
+  });
+  it("PATCH /todos/id -> updates todo object by ID", () => {
+    return request(app)
+      .patch("/todos/2")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .send({
+        id: 10,
+      })
+      .expect(200)
+      .then((response) => {
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            success: true,
+            data: expect.arrayContaining([expect.any(Number)]),
+          })
+        );
+        return request(app)
+          .get("/todos/2")
+          .then((response) => {
+            expect(response.body).toEqual(
+              expect.objectContaining({
+                success: true,
+                data: expect.objectContaining({
+                  id: 2,
+                }),
+              })
+            );
+          });
       });
   });
   it("DELETE /todos/id -> deletes todo object by ID", () => {
