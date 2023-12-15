@@ -3,6 +3,7 @@ const User = require("../resources/users/user.model");
 const app = require("../app");
 const db = require("../config/db");
 const setup = require("../config/setup");
+
 describe("Permissions middleware", function () {
   let adminToken;
   let editorToken;
@@ -75,25 +76,5 @@ describe("Permissions middleware", function () {
       });
   });
 
-  /*
-    it('should only allow admin requests',()=>{
-        
-        return User.findByPk(3).then(user => {
-            token = user.dataValues.token;
-            
-            return request(app)
-            .get("/test-permission-admin")
-            .set("Accept", "application/json")
-            .set("Authorization", "Bearer " + token)
-            .expect("Content-Type", /json/)
-            .send({
-                name: "do dishes",
-            })
-            .expect(200)
-        })
-    })
-    it('should only allow editor requests',()=>{
-            return User.findBy
-    })
-    */
+
 });
