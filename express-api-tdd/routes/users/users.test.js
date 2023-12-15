@@ -2,18 +2,28 @@ const request = require("supertest");
 const app = require("../../app");
 const db = require("../../db");
 const UserModel = require("./user.model");
-const env = require("../../env");
+const setup = require("../../setup");
+const env = process.env;
 
-let token = env.token
+let token = env.TOKEN
+
+
 describe("[Route::User]", () => {
   
   beforeAll(() => {
     return db.sequelize.sync().then(async () => {
-      await UserModel.create({
-        name: "filipe",
-        email: "filipemotasa@hotmail.com",
-        password: "123456",
-      });
+      await setup()
+      //token = await UserModel.findByPk(1).dataValues.token
+      try{
+
+        await UserModel.create({
+          name: "filipe",
+          email: "filipemotasa@hotmail.com",
+          password: "123456",
+        });
+      }catch(ex){
+
+      }
     });
   });
 
@@ -50,8 +60,8 @@ describe("[Route::User]", () => {
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .send({
-        name: "pi",
-        email: "user@example10.com",
+        name: "pipi",
+        email: "pipiteste@teste.com",
         password: "123456",
       })
       .expect(200)
@@ -75,7 +85,7 @@ describe("[Route::User]", () => {
         .expect("Content-Type", /json/)
         .send({
           name: "pi",
-          email: "user@example.com1",
+          email: "user@example1.com",
           password: 123456,
         })
         .expect(402),

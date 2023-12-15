@@ -31,24 +31,21 @@ router.post("/", AuthMiddleware,async function (req, res, next) {
       return;
 
     const completed = false;
-
-    const data = await TodoModel.create({ name, completed });
+    const UserId = req.user.id
+    const data = await TodoModel.create({ name, completed ,UserId});
     res.json(transformResponse(data));
   } catch (ex) {
     return queryFailure(next, ex);
   }
 });
 
-// router.patch("/:id",AuthMiddleware, async function (req, res, next) {
 router.patch("/:id", AuthMiddleware,async function (req, res, next) {
   const id = req.params.id;
+  const UserId = req.user.id
   delete req.body.id;
-  // const name = req.body.name; 
-  // const completed = "completed" in req.body ? req.body.completed : undefined;
-
   const data = await TodoModel.update(
     req.body,
-    { where: { id: id } }
+    { where: { id: id, UserId: UserId } }
   );
   if (notFound(next, data[0])) return;
   res.json(transformResponse(data));
@@ -57,7 +54,8 @@ router.patch("/:id", AuthMiddleware,async function (req, res, next) {
 router.delete("/:id", AuthMiddleware,async function (req, res, next) {
 // router.delete("/:id",AuthMiddleware, async function (req, res, next) {
   const id = req.params.id;
-  const data = await TodoModel.destroy({ where: { id: id } });
+  const UserId = req.user.id
+  const data = await TodoModel.destroy({ where: { id: id, UserId } });
   res.json(transformResponse(data));
 });
 

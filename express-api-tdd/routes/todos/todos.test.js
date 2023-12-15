@@ -1,25 +1,23 @@
 const request = require("supertest");
 const app = require("../../app");
 const db = require("../../db");
-
+const env = process.env;
 const TodoModel = require("./todo.model");
-const env = require("../../env");
+const UserModel = require("../users/user.model");
+const setup = require("../../setup");
 
 describe("[Route::Todo]", () => {
-  let token = env.token
+  let token = env.TOKEN;
   // let TodoModel;
   beforeAll(() => {
     return db.sequelize.sync().then(async () => {
-      await TodoModel.create({ name: "first_task", completed: false });
-      await TodoModel.create({ name: "second_task", completed: false });
-      try{
-        token = await UserModel.create({
-          name: "filipe",
-          email: "filipemotasa@hotmail.com",
-          password: "123456",
-        }).data.token;
-      }catch(ex){
+      await setup();
 
+      try {
+        token = await UserModel.findByPk(1);
+        token = token.dataValues.token; //.dataValues.token
+      } catch (ex) {
+      
       }
     });
   });
@@ -53,7 +51,7 @@ describe("[Route::Todo]", () => {
     return request(app)
       .post("/api/todos")
       .set("Accept", "application/json")
-      .set("Authorization", "Bearer "+token)
+      .set("Authorization", "Bearer " + token)
       .expect("Content-Type", /json/)
       .send({
         name: "do dishes",
@@ -67,6 +65,7 @@ describe("[Route::Todo]", () => {
               id: expect.any(Number),
               name: expect.any(String),
               completed: expect.any(Boolean),
+              UserId: expect.any(Number),
             }),
           })
         );
@@ -77,7 +76,7 @@ describe("[Route::Todo]", () => {
     return request(app)
       .post("/api/todos")
       .set("Accept", "application/json")
-      .set("Authorization", "Bearer "+token)
+      .set("Authorization", "Bearer " + token)
       .expect("Content-Type", /json/)
       .send({
         completed: false,
@@ -101,7 +100,7 @@ describe("[Route::Todo]", () => {
     return request(app)
       .get("/api/todos/1")
       .set("Accept", "application/json")
-      .set("Authorization", "Bearer "+token)
+      .set("Authorization", "Bearer " + token)
       .expect("Content-Type", /json/)
       .expect(200)
       .then((response) => {
@@ -141,7 +140,7 @@ describe("[Route::Todo]", () => {
     return request(app)
       .patch("/api/todos/2")
       .set("Accept", "application/json")
-      .set("Authorization", "Bearer "+token)
+      .set("Authorization", "Bearer " + token)
       .expect("Content-Type", /json/)
       .send({
         name: "patched request",
@@ -173,7 +172,7 @@ describe("[Route::Todo]", () => {
     return request(app)
       .patch("/api/todos/2")
       .set("Accept", "application/json")
-      .set("Authorization", "Bearer "+token)
+      .set("Authorization", "Bearer " + token)
       .expect("Content-Type", /json/)
       .send({
         completed: true,
@@ -204,7 +203,7 @@ describe("[Route::Todo]", () => {
     return request(app)
       .patch("/api/todos/2")
       .set("Accept", "application/json")
-      .set("Authorization", "Bearer "+token)
+      .set("Authorization", "Bearer " + token)
       .expect("Content-Type", /json/)
       .send({
         id: 10,
@@ -237,7 +236,7 @@ describe("[Route::Todo]", () => {
     return request(app)
       .delete("/api/todos/1")
       .set("Accept", "application/json")
-      .set("Authorization", "Bearer "+token)
+      .set("Authorization", "Bearer " + token)
       .expect("Content-Type", /json/)
       .expect(200)
       .then((response) => {

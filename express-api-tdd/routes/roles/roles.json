@@ -1,0 +1,5 @@
+[
+    {"name":"user","key":"role_user"},
+    {"name":"editor","key":"role_editor"},
+    {"name":"admin","key":"role_admin"}
+]

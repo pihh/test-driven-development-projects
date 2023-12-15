@@ -1,0 +1,23 @@
+[
+  {
+    "name": "user",
+    "email": "user@test.com",
+    "password": "123456",
+    "role_id": 1,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAyNTk3Njk2LCJleHAiOjM2MDAxNzAyNTk3Njk2fQ.oUjE4TUQMpxNgkqGXaMQ3EbqFX3T327LzF7FePyYcQ0"
+  },
+  {
+    "name": "editor",
+    "email": "editor@test.com",
+    "password": "123456",
+    "role_id": 2,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAyNTk3NjczLCJleHAiOjM2MDAxNzAyNTk3NjczfQ.Mp0bKaA9PZ1Evz8cjweRrmVjoNvj5jKYKWcyEAQLpak"
+  },
+  {
+    "name": "admin",
+    "email": "admin@test.com",
+    "password": "123456",
+    "role_id": 3,
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzAyNTk1NjgyLCJleHAiOjM2MDAxNzAyNTk1NjgyfQ.mWV-iXoEX1BTNR0Mz5ZxQ5TcjgJpW9A0GKMwDUyJt-c"
+  }
+]

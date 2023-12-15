@@ -42,4 +42,14 @@ describe("[app.js]", () => {
         done()
       });
   });
+
+  it("should throw a 500 error on error", ()=>{
+    return request(app)
+      .get("/test-error")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(500)
+   
+
+  })
 });

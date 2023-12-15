@@ -1,5 +1,6 @@
 const db = require("../../db");
 const { Op, Model, DataTypes } = require("sequelize");
+const User = require("../users/user.model");
 
 
 class Todo extends Model{}
@@ -12,9 +13,11 @@ Todo.init({
   },
   name: DataTypes.STRING,
   completed: DataTypes.BOOLEAN,
+
 },{
   sequelize:db.sequelize,
-  modelName:"todo"
+  modelName:"Todo"
 })
+
 
 module.exports = Todo

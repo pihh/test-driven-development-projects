@@ -1,4 +1,4 @@
-const { query } = require("express");
+
 const createHttpError = require("http-errors");
 function transformResponse(data = {}, success = true) {
   return {
@@ -51,6 +51,13 @@ function unauthenticated(next) {
     })
   );
 }
+function noPermissions(next) {
+  return next(
+    createHttpError(401, {
+      message: "Invalid permissions",
+    })
+  );
+}
 module.exports = {
   transformResponse,
   notFound,
@@ -58,4 +65,5 @@ module.exports = {
   queryFailure,
   queryDb,
   unauthenticated,
+  noPermissions
 };

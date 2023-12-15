@@ -1,7 +1,11 @@
-var express = require("express");
+const express = require("express");
+const router = express.Router();
+const axios = require("axios");
+const transform = require('jsonpath-object-transform');
+const AuthMiddleware = require('../middleware/auth')
 const { transformResponse } = require("../utils/response");
-var request = require('request');
-var router = express.Router();
+const { PermissionAdminMiddleware, PermissionEditorMiddleware } = require("../middleware/permissions");
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
@@ -11,22 +15,63 @@ router.get("/app", function (req, res, next) {
   res.json(transformResponse({ message: "Application running" }));
 });
 
-// router.get("/external", async function (req, res, next) {
-//   console.log('xxxxxxxxxx')
-//   new Promise((resolve, reject) => {
-//     return request({
-//       uri: "https://anapioficeandfire.com/api/characters/583",
-//       function(error, response, body) {
-//         console.log({error,response,body});
-//         if (!error && response.statusCode === 200) {
-//           resolve(body);
-//         } else {
-//           reject(error);
-//         }
-//       },
-//     });
-//   }).then(response => res.json(transformResponse({response}))).catch(ex => res.json(transformResponse({ex},false)))
+router.get("/test-error", function (req, res, next) {
+  throw new Error("Test error recieved");
+});
 
-// });
+router.get("/external", async function (req, res, next) {
+  const response = await axios.get(
+    "https://jsonplaceholder.typicode.com/posts"
+  );
+  res.json(transformResponse(response.data));
+});
+
+router.get("/test-permission-admin", async function (req, res, next) {
+  const response = await axios.get(
+    "https://jsonplaceholder.typicode.com/posts"
+  );
+  res.json(transformResponse(response.data));
+});
+
+router.get("/test-authenticated",AuthMiddleware, async function (req, res, next) {
+
+  res.json(transformResponse({authenticated:true}));
+});
+
+
+router.get("/test-admin",PermissionAdminMiddleware, async function (req, res, next) {
+
+  res.json(transformResponse({admin:true}));
+});
+
+router.get("/test-editor",PermissionEditorMiddleware, async function (req, res, next) {
+
+  res.json(transformResponse({editor:true}));
+});
+
+
+router.get("/reshape", function(req,res,next){
+  var template = {
+    foo: ['$.some.crazy', {
+      bar: '$.example'
+    }]
+  };
+  
+  var data = {
+    some: {
+      crazy: [
+        {
+          example: 'A'
+        },
+        {
+          example: 'B'
+        }
+      ]
+    }
+  };
+  
+  var result = transform(data, template);
+  res.json(transformResponse(result));
+})
 
 module.exports = router;
