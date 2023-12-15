@@ -1,7 +1,7 @@
-const db = require("../../db");
+const db = require("../../config/db");
 
 
-const { Op, Model, DataTypes, ValidationError,ValidationErrorItem } = require("sequelize");
+const { Model, DataTypes} = require("sequelize");
 
 class Role extends Model {
 }
@@ -20,20 +20,20 @@ Role.init(
     sequelize: db.sequelize,
     modelName: "Role",
 
-    // setterMethods: {
-    //   id: function (value) {
-    //     if (!this.isNewRecord) {
-    //       throw new ValidationError(null, [
-    //         new ValidationErrorItem(
-    //           "readonly",
-    //           "id may not be set",
-    //           "id",
-    //           value
-    //         ),
-    //       ]);
-    //     }
-    //   },
-    // },
+     setterMethods: {
+       id: function (value) {
+         if (!this.isNewRecord) {
+           throw new ValidationError(null, [
+             new ValidationErrorItem(
+               "readonly",
+               "id may not be set",
+               "id",
+               value
+             ),
+           ]);
+         }
+       },
+     },
   }
 );
 

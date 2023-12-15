@@ -1,7 +1,6 @@
-const db = require("../../db");
-const { Op, Model, DataTypes } = require("sequelize");
-const Role = require("../roles/role.model")
-const Todo = require("../todos/todo.model")
+const db = require("../../config/db");
+const {  Model, DataTypes } = require("sequelize");
+
 
 
 class User extends Model{
@@ -27,7 +26,7 @@ User.init({
       exclude: [
         'password',
         'email',
-        // 'token'
+
       ]
     }
   }

@@ -1,11 +1,11 @@
 const db = require("./db");
 const fs = require("fs");
 const path = require("path");
-const RoleModel = require("./resources/roles/role.model");
-const UserModel = require("./resources/users/user.model");
-const TodoModel = require("./resources/todos/todo.model");
+const RoleModel = require("../resources/roles/role.model");
+const UserModel = require("../resources/users/user.model");
+const TodoModel = require("../resources/todos/todo.model");
 
-require('./resources/relationships');
+require('../resources/relationships');
 
 const setup = async function () {
 

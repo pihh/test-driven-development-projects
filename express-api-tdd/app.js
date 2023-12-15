@@ -1,23 +1,23 @@
 require('dotenv').config()
 
-var express = require('express');
-var path = require('path');
-var createError = require('http-errors');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const createError = require('http-errors');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const setup = require('./config/setup');
 
 const { transformResponse } = require('./utils/response');
 
-var indexRouter = require('./resources/index');
-var rolesRouter = require('./resources/roles/roles');
-var usersRouter = require('./resources/users/users');
-var todosRouter = require('./resources/todos/todos');
+const indexRouter = require('./resources/index');
+const rolesRouter = require('./resources/roles/roles');
+const usersRouter = require('./resources/users/users');
+const todosRouter = require('./resources/todos/todos');
 
-
-const setup = require('./setup');
 setup();
-var app = express();
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

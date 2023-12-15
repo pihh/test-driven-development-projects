@@ -1,8 +1,8 @@
 const request = require("supertest");
 const app = require("../../app");
-const db = require("../../db");
+const db = require("../../config/db");
 const UserModel = require("./user.model");
-const setup = require("../../setup");
+const setup = require("../../config/setup");
 const env = process.env;
 
 let token = env.TOKEN

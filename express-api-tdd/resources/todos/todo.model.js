@@ -1,6 +1,5 @@
-const db = require("../../db");
-const { Op, Model, DataTypes } = require("sequelize");
-const User = require("../users/user.model");
+const db = require("../../config/db");
+const { Model, DataTypes } = require("sequelize");
 
 
 class Todo extends Model{}
