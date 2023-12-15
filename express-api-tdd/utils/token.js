@@ -1,9 +1,9 @@
 const env = process.env;
 const jwt = require("jsonwebtoken");
-const User = require("../routes/users/user.model");
+const User = require("../resources/users/user.model");
 const { unauthenticated } = require("./response");
 const transform = require("jsonpath-object-transform");
-const Role = require("../routes/roles/role.model");
+const Role = require("../resources/roles/role.model");
 
 const jwtSign = function (next, user) {
   let token;

@@ -1,4 +1,5 @@
 require('dotenv').config()
+
 var express = require('express');
 var path = require('path');
 var createError = require('http-errors');
@@ -8,11 +9,11 @@ var logger = require('morgan');
 
 const { transformResponse } = require('./utils/response');
 
-var indexRouter = require('./routes/index');
-var rolesRouter = require('./routes/roles/roles');
-var usersRouter = require('./routes/users/users');
-var todosRouter = require('./routes/todos/todos');
-require('./routes/relationships');
+var indexRouter = require('./resources/index');
+var rolesRouter = require('./resources/roles/roles');
+var usersRouter = require('./resources/users/users');
+var todosRouter = require('./resources/todos/todos');
+
 
 const setup = require('./setup');
 setup();
