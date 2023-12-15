@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("./app");
-const db = require("./db");
+const db = require("./config/db");
 
 describe("[app.js]", () => {
   beforeAll(() => {

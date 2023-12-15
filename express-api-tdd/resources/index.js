@@ -26,12 +26,7 @@ router.get("/external", async function (req, res, next) {
   res.json(transformResponse(response.data));
 });
 
-router.get("/test-permission-admin", async function (req, res, next) {
-  const response = await axios.get(
-    "https://jsonplaceholder.typicode.com/posts"
-  );
-  res.json(transformResponse(response.data));
-});
+
 
 router.get("/test-authenticated",AuthMiddleware, async function (req, res, next) {
 
@@ -39,12 +34,12 @@ router.get("/test-authenticated",AuthMiddleware, async function (req, res, next)
 });
 
 
-router.get("/test-admin",PermissionAdminMiddleware, async function (req, res, next) {
+router.get("/test-permission-admin",PermissionAdminMiddleware, async function (req, res, next) {
 
   res.json(transformResponse({admin:true}));
 });
 
-router.get("/test-editor",PermissionEditorMiddleware, async function (req, res, next) {
+router.get("/test-permission-editor",PermissionEditorMiddleware, async function (req, res, next) {
 
   res.json(transformResponse({editor:true}));
 });

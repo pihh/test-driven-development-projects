@@ -6,7 +6,7 @@ const Permission = async (req, res, next, role_id) => {
   try {
 
     const user = await decodeUser(req)
-    if(!user.role == role_id){
+    if(user.role < role_id){
       return noPermissions(next)
     }else{
       next();

@@ -12,17 +12,17 @@ const setup = async function () {
   await db.sequelize.sync();
     async function seed() {
       const RoleData = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "/resources/roles/roles.json"), {
+        fs.readFileSync(path.join(__dirname, "../resources/roles/roles.json"), {
           encoding: "utf8",
         })
       );
       const UserData = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "/resources/users/users.json"), {
+        fs.readFileSync(path.join(__dirname, "../resources/users/users.json"), {
           encoding: "utf8",
         })
       );
       const TodoData = JSON.parse(
-        fs.readFileSync(path.join(__dirname, "/resources/todos/todos.json"), {
+        fs.readFileSync(path.join(__dirname, "../resources/todos/todos.json"), {
           encoding: "utf8",
         })
       );

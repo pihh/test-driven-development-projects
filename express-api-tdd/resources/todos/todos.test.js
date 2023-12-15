@@ -1,10 +1,10 @@
 const request = require("supertest");
 const app = require("../../app");
-const db = require("../../db");
+const db = require("../../config/db");
 const env = process.env;
-const TodoModel = require("./todo.model");
+
 const UserModel = require("../users/user.model");
-const setup = require("../../setup");
+const setup = require("../../config/setup");
 
 describe("[Route::Todo]", () => {
   let token = env.TOKEN;
